@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms import UserRegister
+from django.contrib.auth.models import User 
 
 
 def home(request):
@@ -18,7 +19,8 @@ def sign_up_by_django(request):
             repeat_password = form.cleaned_data['repeat_password']
             age = form.cleaned_data['age']
 
-            if password == repeat_password and age >= 18 and username not in users:
+            if password == repeat_password and age >= 18 and username not in User.objects.filter(username=username).exists():
+                User.objects.create_user(username=username, password=password)
                 info = f"Приветствуем, {username}!"
             else:
                 info = "Ошибка: проверьте данные."
@@ -43,7 +45,8 @@ def sign_up_by_html(request):
             repeat_password = form.cleaned_data['repeat_password']
             age = form.cleaned_data['age']
 
-            if password == repeat_password and age >= 18 and username not in users:
+            if password == repeat_password and age >= 18 and username not in User.objects.filter(username=username).exists():
+                User.objects.create_user(username=username, password=password)
                 info = f"Приветствуем, {username}!"
             else:
                 info = "Ошибка: проверьте данные."
